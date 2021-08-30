@@ -1,3 +1,5 @@
+import Step from './step.model'
+
 const EXISTS = 'EXISTS';
 const SUCCESS = 'SUCCESS';
 const FAILED = 'FAILED';

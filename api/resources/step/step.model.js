@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
-import Step from './step.type';
 
 const { Schema } = mongoose;
 
 const stepSchema = new Schema({
-    id: {
+    number: {
         type: Number,
         required: true
     },
@@ -13,21 +12,17 @@ const stepSchema = new Schema({
         required: true
     },
     image: { //encoded in base64
-        type: String,
-        required: false
+        type: String
     },
-    previousStep: {
-        type: Step,
-        required: false
+    previousStep: { //id
+        type: String
     },
-    nextStep: {
-        type: Step,
-        required: false
+    nextStep: { //id
+        type: String
     },
-    module: {
-        type: Module,
-        required: false
+    module: { //id
+        type: String
     }
 });
 
-export default mongoose.model('StepSchema', stepSchema);
+export default mongoose.model('Step', stepSchema);
