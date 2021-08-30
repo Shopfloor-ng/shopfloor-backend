@@ -45,7 +45,7 @@ export default {
 
         try {
 
-            const foundUser = await User.findOne({ _id: req.query.id });
+            const foundUser = await User.findOne({ _id: req.query.id }) || await User.findOne({ email: req.query.email });
             if (foundUser) {
 
                 return res.send({ message: SUCCESS, data: foundUser });
