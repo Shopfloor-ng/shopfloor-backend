@@ -11,7 +11,7 @@ export default {
 
         try {
 
-            const foundStep = await Step.findOne({ _id: req.body.id}); //, module: req.body.module});
+            const foundStep = await Step.findOne({ _id: req.body.id }); //, module: req.body.module});
             if (!foundStep) {
 
                 const step = await Step.create(req.body);
@@ -25,14 +25,14 @@ export default {
     },
 
     // Get all steps
-    async findSteps (req, res) {
+    async findSteps(req, res) {
 
         try {
-            
+
             const steps = await Step.find();
             return res.send({ message: SUCCESS, data: steps });
         } catch (error) {
-            
+
             return res.status(500).send(error);
         }
     },
@@ -42,9 +42,30 @@ export default {
 
         try {
 
-            const foundStep = await Step.findOne({ id: req.query.id });
-            if (foundStep) {
+            let filter = {};
 
+            //define search keys
+            const id = req.query.id ? req.query.id : undefined;
+            const number = req.query.number ? req.query.number : undefined;
+            const description = req.query.description ? new RegExp(req.query.description, 'i') : undefined;
+            const module = req.query.module ? req.query.module : undefined;
+
+            if (id !== undefined) {
+                filter._id = id;
+            }
+            if (number !== undefined) {
+                filter.number = number;
+            }
+            if (description !== undefined) {
+                filter.description = description;
+            }
+            if (module !== undefined){
+                filter.module = module;
+            }
+
+            const foundStep = await Step.find(filter);
+            
+            if (foundStep.length > 0) {
                 return res.send({ message: SUCCESS, data: foundStep });
             } else {
                 return res.send({ message: NOT_FOUND });
@@ -65,17 +86,18 @@ export default {
                 number: req.body.number,
                 description: req.body.description,
                 image: req.body.image,
-                parentStep: req.body.parentStep,
+                previousStep: req.body.previousStep,
+                nextStep: req.body.nextStep,
                 module: req.body.module
             };
             const updatedStep = await Step.findOneAndUpdate({ id: req.body.id }, step, { new: true });
             if (updatedStep) {
 
-                return res.send({ message : SUCCESS, data: updatedStep });
+                return res.send({ message: SUCCESS, data: updatedStep });
             } else {
 
                 return res.send({ message: FAILED });
-            }            
+            }
         } catch (error) {
 
             return res.status(500).send(error);
@@ -90,14 +112,14 @@ export default {
             const deletedStep = await Step.findByIdAndRemove(req.query.id)
             if (deletedStep) {
 
-                return res.send({ message : SUCCESS });
+                return res.send({ message: SUCCESS });
             } else {
 
                 return res.send({ message: FAILED });
             }
-            
+
         } catch (error) {
-            
+
             return res.status(500).send(error);
         }
     }
