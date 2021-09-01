@@ -1,6 +1,5 @@
-import { Module } from "../module/module.type";
 
-class Step {
+export class Step {
     id;
     description;
     image; // Base64 encoded image
@@ -9,4 +8,4 @@ class Step {
     module;
 }
 
-module.exports = { Step };
+// module.exports = { Step };
