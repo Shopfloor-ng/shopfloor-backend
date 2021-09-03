@@ -7,6 +7,7 @@ import { restRouter } from './api';
 
 const app = express();
 const PORT = 3000;
+const IFACE = "0.0.0.0"
 
 // crate database connection
 DB.connect();
@@ -17,6 +18,6 @@ app.use('/api', restRouter);
 app.use(notfound);
 app.use(error);
 
-app.listen(PORT, () => {
-    console.log(`Server is running at PORT http://localhost:${PORT}`);
+app.listen(PORT, IFACE, () => {
+    console.log(`Server is running at ${IFACE}:${PORT}`);
 });
